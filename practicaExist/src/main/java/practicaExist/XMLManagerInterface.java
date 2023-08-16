@@ -1,0 +1,12 @@
+package practicaExist;
+
+import javax.naming.ldap.ManageReferralControl;
+
+import net.sf.saxon.expr.TryCatch;
+
+public interface XMLManagerInterface extends AutoCloseable {
+	public double IllaMesElevada() throws Exception;
+	public void ContingutNodeIlla();
+	public void ConsultaFlowr();
+	public void ModificarContingut();
+}

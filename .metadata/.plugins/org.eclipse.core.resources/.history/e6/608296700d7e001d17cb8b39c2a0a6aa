@@ -1,0 +1,11 @@
+package test;
+
+import practicaExist.XMLManager;
+
+public class Main {
+
+	public static void main(String[] args) {
+		XMLManager manager = new XMLManager("/db/mike/");
+	}
+
+}

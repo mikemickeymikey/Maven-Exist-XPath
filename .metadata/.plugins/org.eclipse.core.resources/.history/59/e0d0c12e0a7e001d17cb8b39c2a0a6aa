@@ -1,0 +1,16 @@
+package practicaExist;
+
+import net.sf.saxon.expr.TryCatch;
+
+public interface XMLManagerInterface extends AutoCloseable {
+	
+	try {
+		XMLManager manager = new XMLManager("mike");
+		manager.afegirRecurs("mondial.xml");
+	}
+	catch(Exception e) {
+		System.out.print("Error al crear el manager.");
+	}
+	
+	
+}

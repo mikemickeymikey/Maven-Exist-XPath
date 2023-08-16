@@ -1,0 +1,28 @@
+package practicaExist;
+
+import java.util.Collection;
+import org.xmldb.api.DatabaseManager;
+import org.xmldb.api.base.Database;
+import org.xmldb.api.modules.XPathQueryService;
+
+
+public class XMLManager {
+	private final String driver = "org.exist.xmldb.DatabaseImpl";
+	private final String URI = "http://localhost:8080/exist/xmlrpc";
+	private final Database db = (Database)Class.forName(driver).newInstance();
+	private Collection coleccio;
+	private XPathQueryService servei;
+	
+	public XMLManager(String coleccio) throws Exception{
+		final String driver = "org.exist.xmldb.DatabaseImpl";
+		Class cl = Class.forName(driver);
+		DatabaseManager.registerDatabase(db);
+		String col = URI + coleccio;
+		String usu = "admin";
+		String pw = "";
+		this.coleccio = (Collection) DatabaseManager.getCollection(col, usu, pw);
+		servei = (XPathQueryService)((org.xmldb.api.base.Collection) this.coleccio).getService("XPathQueryService", "1.0");
+	}
+	
+	
+}

@@ -1,0 +1,14 @@
+package practicaExist;
+
+import net.sf.saxon.expr.TryCatch;
+
+public interface XMLManagerInterface extends AutoCloseable {
+	
+	XMLManager manager = new XMLManager("mike");
+	
+	
+	public Float maxPoblacioProvincia() {
+		
+	}
+	
+}

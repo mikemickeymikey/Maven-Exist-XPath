@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="org.exist.Database"/>
+    <fullyQualifiedTypeName name="java.util.Collection"/>
+    <fullyQualifiedTypeName name="org.xmldb.api.base.Collection"/>
+    <fullyQualifiedTypeName name="org.xmldb.api.base.Database"/>
+    <fullyQualifiedTypeName name="org.xmldb.api.modules.XPathQueryService"/>
+    <fullyQualifiedTypeName name="org.xmldb.api.DatabaseManager"/>
+    <fullyQualifiedTypeName name="net.sf.saxon.expr.TryCatch"/>
+    <fullyQualifiedTypeName name="com.evolvedbinary.j8fu.Try"/>
+    <fullyQualifiedTypeName name="java.io.File"/>
+    <fullyQualifiedTypeName name="org.checkerframework.common.returnsreceiver.qual.This"/>
+    <fullyQualifiedTypeName name="net.sf.saxon.expr.TryCatch.CatchClause"/>
+    <fullyQualifiedTypeName name="java.lang.Float"/>
+    <fullyQualifiedTypeName name="java.lang.AutoCloseable"/>
+    <fullyQualifiedTypeName name="javax.naming.ldap.ManageReferralControl"/>
+    <fullyQualifiedTypeName name="practicaExist.XMLManager"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="java.lang.String"/>
+</qualifiedTypeNameHistroy>

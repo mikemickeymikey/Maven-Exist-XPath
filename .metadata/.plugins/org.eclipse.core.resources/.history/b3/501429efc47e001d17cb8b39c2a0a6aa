@@ -1,0 +1,152 @@
+package practicaExist;
+
+import java.io.File;
+import org.xmldb.api.DatabaseManager;
+import org.xmldb.api.modules.XPathQueryService;
+import org.xmldb.api.base.*;
+import org.xmldb.api.modules.*;
+import org.xmldb.api.*;
+import javax.xml.transform.OutputKeys;
+
+import org.checkerframework.common.returnsreceiver.qual.This;
+import org.exist.xmldb.EXistResource;
+
+
+public class XMLManager {
+	private final String driver = "org.exist.xmldb.DatabaseImpl";
+	private final String URI = "xmldb:exist://localhost:8080/exist/xmlrpc";
+	private final Database db = (Database)Class.forName(driver).newInstance();
+	private Collection coleccio;
+	private XPathQueryService servei;
+	
+	public XMLManager(String coleccio) throws Exception{
+		final String driver = "org.exist.xmldb.DatabaseImpl";
+		Class cl = Class.forName(driver);
+		DatabaseManager.registerDatabase(db);
+		String col = URI + coleccio;
+		String usu = "admin";
+		String pw = "";
+		this.coleccio = (Collection)DatabaseManager.getCollection(col, usu, pw);
+		servei = (XPathQueryService)((org.xmldb.api.base.Collection) this.coleccio).getService("XPathQueryService", "1.0");
+	}
+	
+	public void afegirRecurs(String fileName) {
+		File fitxer = new File("mondial.xml");
+		if(!fitxer.canRead()) System.out.println("NO ES POT OBRIR EL FITXER MONDIAL.XML");
+		else{ 
+			try {
+				Resource recurs = ((org.xmldb.api.base.Collection) coleccio).createResource(fileName, "XMLResource"); 
+				recurs.setContent(fileName);
+				((org.xmldb.api.base.Collection) coleccio).storeResource(recurs);
+			} catch (XMLDBException e) {
+				System.out.println("No es pot afegir el recurs.");
+			} 
+		};
+	}
+	
+	public void eliminarRecurs(String fileName) {
+		try { 
+			Resource recursoParaBorrar = ((org.xmldb.api.base.Collection) coleccio).getResource("NUEVOS_DEP.xml"); 
+			((org.xmldb.api.base.Collection) coleccio).removeResource(recursoParaBorrar);
+		}
+		catch(XMLDBException e) {
+			System.out.println("No es pot esborrar el recurs.");
+		} 
+	}
+	
+	
+	/*Retorna la illa amb l'elevació més alta. */
+	public double IllaMesElevada() throws Exception {
+		String consulta = "doc('mondial.xml')/mondial/island/height";
+		ResourceSet result = null;
+		result = servei.query("max(" + consulta + ")");
+		
+		if(result != null) {
+			ResourceIterator i = result.getIterator();
+			if(i.hasMoreResources())
+				return Double.parseDouble(i.nextResource().getContent().toString());
+		}
+		return -1;
+	}
+	
+	public void ContingutNodeIlla(String idIlla) {
+		try {
+			String sXML= "/*/island[@id='" + idIlla + "']";
+			ResourceSet result = servei.query(sXML);
+			ResourceIterator i;
+			i = result.getIterator();
+			Resource r;
+			if(i != null) {
+				r = i.nextResource() ;
+				System.out.println("\nIlla amb id: " + idIlla);
+				System.out.println( (String) r.getContent() ) ;
+			}
+		} catch (XMLDBException e) {
+			System.out.println("No s'ha trobat l'illa");
+		}
+	}
+	
+	public void ConsultaFlowr() {
+		try {
+			String sXML =   "<results>\r\n"
+						+ " { for $i in doc(\"/db/mike/mondial.xml\")/*/island\r\n"
+						+ " let $area := $i/area"
+						+ " where $i/area > 300"
+						+ " order by $i/name ascending"
+						+ "   return concat(\"<area_illa_300>\",$i/name/text(),\" \",$area,\"</area_illa_300>\")}"
+						+ " </results>";
+			ResourceSet result = servei.query(sXML);
+			ResourceIterator i;
+			i = result.getIterator();
+			Resource r;
+			while(i.hasMoreResources()) {
+				r = i.nextResource() ;
+				System.out.println("\nResultats: ");
+				System.out.println( (String) r.getContent() ) ;
+			}
+		} catch (XMLDBException e) {
+			System.out.println("\nNo s'ha pogut executar la consulta.");
+		}
+	}
+	
+	public void PaginaHTML() {
+		
+	}
+	
+	public boolean ModificarContingut(String clau) {
+		try {
+			if(clau != null) {
+				servei.query("update insert <prova>asdf</prova> into //island[name=\"" + clau + "\"]");
+				System.out.println("\nNode modificat.");
+				return true;
+			}
+			return false;
+		} catch (XMLDBException e) {
+			System.out.println("\nNo s'ha pogut executar l'actualització.");
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean EliminarNode(String clau) {
+		try {
+			if(clau != null) {
+				servei.query("update delete /mondial/island[name=\""+ clau +"\"]");
+				System.out.println("\nNode eliminat.");
+				return true;
+			}
+			return false;
+		} catch (XMLDBException e) {
+			System.out.println("\nNo s'ha pogut eliminar el node.");
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public void close() throws Exception {
+		DatabaseManager.deregisterDatabase(db);
+	}
+	
+	
+	
+}
